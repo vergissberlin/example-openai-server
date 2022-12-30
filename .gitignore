@@ -3,5 +3,6 @@
 !/.env.dist
 !/.gitignore
 !/package.json
+!/README.md
 !/server.mjs
 !/yarn.lock
