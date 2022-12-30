@@ -3,6 +3,12 @@
     "version": "1.0.0",
     "description": "Example server for OpenAI API",
     "main": "server.mjs",
+    "scripts": {
+        "start": "node server.mjs"
+    },
+    "engines": {
+        "node": "16.x"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/vergissberlin/example-openai-server.git"
