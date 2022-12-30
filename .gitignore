@@ -1,0 +1,7 @@
+/*
+
+!/.env.dist
+!/.gitignore
+!/package.json
+!/server.mjs
+!/yarn.lock

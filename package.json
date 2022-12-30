@@ -1,0 +1,20 @@
+{
+    "name": "example-openai-server",
+    "version": "1.0.0",
+    "description": "Example server for OpenAI API",
+    "main": "server.mjs",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vergissberlin/example-openai-server.git"
+    },
+    "keywords": [
+        "openai"
+    ],
+    "author": "André Ladmann",
+    "dependencies": {
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "http": "^0.0.1-security",
+        "openai": "^3.1.0"
+    }
+}
