@@ -60,7 +60,7 @@ app.get('/image/', async (req, res) => {
     const response = await openai.createImage({
         prompt,
         n: 1,
-        size: "1024x1024",
+        size: "256x256",
     })
     image_url = response.data.data[0].url
 
