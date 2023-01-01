@@ -14,28 +14,52 @@ const configuration = new Configuration({
 })
 const openai = new OpenAIApi(configuration)
 
-app.get('/', async (req, res) => {
+/**
+ * Prepare the request by adding CORS headers and checking for a prompt
+ * @param res
+ * @returns {Promise<void>}
+ * @private
+ */
+const prepareRequest = (res) => {
     // Add CORS headers to the response
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+    res.setHeader('Access-Control-Allow-Origin', 'https://vergissberlin.github.io/example-openai-vuejs')
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST')
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
     res.setHeader('Access-Control-Allow-Credentials', true)
 
-    // get get parameter question from the request
-    const question = req.query.question
-    if (!question) {
-        res.json({text: "No question provided"})
+    // Get get parameter prompt from the request
+    const prompt = req.query.prompt
+    if (!prompt) {
+        res.json({text: "No prompt provided"})
         return
     }
+}
+
+app.get('/text/', async (req, res) => {
+    prepareRequest(res)
 
     const completion = await openai.createCompletion({
-        model: "text-davinci-002",
-        prompt: question,
+        model: "text-davinci-003",
+        prompt,
         max_tokens: 1000,
         temperature: 0.5,
     })
     console.log(completion.data.choices[0].text)
     res.json({text: completion.data.choices[0].text})
+})
+
+app.get('/image/', async (req, res) => {
+    prepareRequest(res)
+
+    const response = await openai.createImage({
+        prompt,
+        n: 1,
+        size: "1024x1024",
+    })
+    image_url = response.data.data[0].url
+
+    console.log(image_url)
+    res.json({image: image_url})
 })
 
 app.listen(port, () => console.log(`OpenAI server listening on ${url}:${port}! `))
