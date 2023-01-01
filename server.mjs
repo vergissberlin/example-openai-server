@@ -68,7 +68,7 @@ app.get('/image/', async (req, res) => {
         console.log(error)
         res.json({image: "Error"})
     })
-    image_url = response.data.data[0].url
+    let image_url = response.data.data[0].url
 
     console.log(image_url)
     res.json({image: image_url})
