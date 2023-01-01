@@ -27,18 +27,16 @@ const prepareRequest = (res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST')
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
     res.setHeader('Access-Control-Allow-Credentials', true)
+}
 
+app.get('/text/', async (req, res) => {
+    prepareRequest(res)
     // Get get parameter prompt from the request
     const prompt = req.query.prompt
     if (!prompt) {
         res.json({text: "No prompt provided"})
         return
     }
-}
-
-app.get('/text/', async (req, res) => {
-    prepareRequest(res)
-
     const completion = await openai.createCompletion({
         model: "text-davinci-003",
         prompt,
@@ -46,12 +44,18 @@ app.get('/text/', async (req, res) => {
         temperature: 0.5,
     })
     console.log(completion.data.choices[0].text)
-    res.json({text: completion.data.choices[0].text})
+    res.json({image: completion.data.choices[0].text})
 })
 
 app.get('/image/', async (req, res) => {
     prepareRequest(res)
 
+    // Get get parameter prompt from the request
+    const prompt = req.query.prompt
+    if (!prompt) {
+        res.json({text: "No prompt provided"})
+        return
+    }
     const response = await openai.createImage({
         prompt,
         n: 1,
