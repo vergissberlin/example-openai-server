@@ -7,6 +7,7 @@ dotenv.config()
 const app = express()
 const port = process.env.PORT || 3000
 const url = process.env.URL || 'http://localhost'
+const origin = process.env.ORIGIN || '*'
 
 const configuration = new Configuration({
     organization: process.env.OPENAI_ORG,
@@ -22,7 +23,7 @@ const openai = new OpenAIApi(configuration)
  */
 const prepareRequest = (res) => {
     // Add CORS headers to the response
-    res.setHeader('Access-Control-Allow-Origin', 'https://vergissberlin.github.io/example-openai-vuejs')
+    res.setHeader('Access-Control-Allow-Origin', origin)
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST')
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
     res.setHeader('Access-Control-Allow-Credentials', true)
