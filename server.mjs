@@ -59,17 +59,19 @@ app.get('/image/', async (req, res) => {
         res.json({image: "No prompt provided"})
         return
     }
-
     const response = await openai.createImage({
         prompt,
         n: 1,
         size: "256x256",
     }).catch((error) => {
         console.log(error)
-        res.json({image: "Error"})
     })
-    let image_url = response.data.data[0].url
 
+    if (response.data.data.length === 0) {
+        res.json({image: "No image found"})
+        return
+    }
+    let image_url = response.data.data[0].url
     console.log(image_url)
     res.json({image: image_url})
 })
