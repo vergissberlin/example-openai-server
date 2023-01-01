@@ -42,6 +42,9 @@ app.get('/text/', async (req, res) => {
         prompt,
         max_tokens: 1000,
         temperature: 0.5,
+    }).catch((error) => {
+        console.log(error)
+        res.json({text: "Error"})
     })
     console.log(completion.data.choices[0].text)
     res.json({text: completion.data.choices[0].text})
@@ -61,6 +64,9 @@ app.get('/image/', async (req, res) => {
         prompt,
         n: 1,
         size: "256x256",
+    }).catch((error) => {
+        console.log(error)
+        res.json({image: "Error"})
     })
     image_url = response.data.data[0].url
 
