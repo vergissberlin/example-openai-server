@@ -44,7 +44,7 @@ app.get('/text/', async (req, res) => {
         temperature: 0.5,
     })
     console.log(completion.data.choices[0].text)
-    res.json({image: completion.data.choices[0].text})
+    res.json({text: completion.data.choices[0].text})
 })
 
 app.get('/image/', async (req, res) => {
@@ -53,9 +53,10 @@ app.get('/image/', async (req, res) => {
     // Get get parameter prompt from the request
     const prompt = req.query.prompt
     if (!prompt) {
-        res.json({text: "No prompt provided"})
+        res.json({image: "No prompt provided"})
         return
     }
+
     const response = await openai.createImage({
         prompt,
         n: 1,
