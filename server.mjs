@@ -38,7 +38,7 @@ app.get('/text/', async (req, res) => {
         return
     }
     const completion = await openai.createCompletion({
-        model: "text-davinci-002",
+        model: "text-davinci-003",
         prompt,
         max_tokens: 1000,
         temperature: 0.5,
