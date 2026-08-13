@@ -4,7 +4,7 @@
   "description": "OpenAI-compatible proxy for the example chat client",
   "type": "module",
   "main": "dist/index.js",
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.34.5",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.build.json",
