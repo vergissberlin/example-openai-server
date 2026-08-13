@@ -2,5 +2,14 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "description": "typescript-eslint does not support TypeScript 7 (typescript-eslint/typescript-eslint#10940). Taking the major breaks `pnpm lint` outright, which is how it reached master the first time. Lift this once support ships.",
+      "matchPackageNames": [
+        "typescript"
+      ],
+      "allowedVersions": "<7"
+    }
   ]
 }

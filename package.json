@@ -26,7 +26,7 @@
   "keywords": [
     "openai"
   ],
-  "author": "André Ladmann",
+  "author": "Andr\u00e9 Ladmann",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.6",
@@ -47,7 +47,7 @@
     "prettier": "^3.9.6",
     "supertest": "^7.2.2",
     "tsx": "^4.23.12",
-    "typescript": "~7.0.0",
+    "typescript": "~5.9.3",
     "typescript-eslint": "^8.0.0",
     "vitest": "^4.1.10"
   }
