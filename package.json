@@ -1,27 +1,54 @@
 {
-    "name": "example-openai-server",
-    "version": "1.0.0",
-    "description": "Example server for OpenAI API",
-    "main": "server.mjs",
-    "scripts": {
-        "start": "node server.mjs"
-    },
-    "engines": {
-        "node": "16.x"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/vergissberlin/example-openai-server.git"
-    },
-    "keywords": [
-        "openai"
-    ],
-    "author": "André Ladmann",
-    "license": "MIT",
-    "dependencies": {
-        "dotenv": "^16.0.3",
-        "express": "^4.18.2",
-        "http": "^0.0.1-security",
-        "openai": "^3.1.0"
-    }
+  "name": "example-openai-server",
+  "version": "2.0.0",
+  "description": "OpenAI-compatible proxy for the example chat client",
+  "type": "module",
+  "main": "dist/index.js",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write src/",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vergissberlin/example-openai-server.git"
+  },
+  "keywords": [
+    "openai"
+  ],
+  "author": "André Ladmann",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.7",
+    "express": "^4.22.2",
+    "express-rate-limit": "^8.6.2",
+    "openai": "^7.4.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.25",
+    "@types/node": "^22.20.1",
+    "@types/superagent": "^8.1.11",
+    "@types/supertest": "^7.2.1",
+    "eslint": "^10.8.1",
+    "prettier": "^3.9.6",
+    "supertest": "^7.2.2",
+    "tsx": "^4.23.12",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^4.1.10"
+  }
 }

@@ -1,0 +1,7 @@
+{
+  // Build config: same options, minus the tests. They are still type-checked
+  // via `tsconfig.json`, but the runtime image should carry no test code and
+  // no dev-only imports.
+  "extends": "./tsconfig.json",
+  "exclude": ["dist", "node_modules", "src/**/__tests__/**"]
+}
