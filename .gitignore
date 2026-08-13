@@ -1,9 +1,25 @@
-/*
+# This used to be an allowlist: `/*` followed by a handful of `!` exceptions.
+# That silently excluded every file nobody had thought to add — workable for a
+# single-file server, a trap for anything larger.
 
-!/.env.dist
-!/.gitignore
-!/LICENSE
-!/package.json
-!/README.md
-!/server.mjs
-!/yarn.lock
+node_modules/
+dist/
+
+# Local env. `.env.example` is committed on purpose.
+.env
+.env.local
+.env.*.local
+
+# Logs and caches
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+.cache/
+coverage/
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/
+*.sw?
