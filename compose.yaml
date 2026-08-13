@@ -1,0 +1,50 @@
+# Coolify deployment for the proxy.
+#
+# Point Coolify at this repository with the "Docker Compose" build pack and
+# give the service a domain. Traefik terminates TLS and forwards to port 3000.
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    expose:
+      - '3000'
+
+    restart: unless-stopped
+
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+
+      # The upstream key. Set it in Coolify's environment variables — unlike
+      # the client's build arguments, this one is read at runtime and must
+      # never be baked into an image.
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?set the upstream OpenAI API key}
+      OPENAI_ORG: ${OPENAI_ORG:-}
+
+      # Required, and deliberately without a default. The client runs on a
+      # different subdomain, so its origin has to be listed here or the
+      # browser blocks every request — and a wildcard would let any page on
+      # the internet spend this key's budget.
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:?set the client origin, e.g. https://chat.example.com}
+
+      ALLOWED_MODELS: ${ALLOWED_MODELS:-gpt-4o-mini,gpt-4o}
+      DEFAULT_MODEL: ${DEFAULT_MODEL:-gpt-4o-mini}
+      MAX_TOKENS_LIMIT: ${MAX_TOKENS_LIMIT:-2048}
+      RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-60000}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-30}
+
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:3000/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

@@ -64,6 +64,29 @@ See `.env.example` for the full list. The four that matter:
 | `ALLOWED_MODELS` | Models this server will forward. Anything else is rejected. |
 | `MAX_TOKENS_LIMIT` | Ceiling per request, applied whatever the caller asks for. |
 
+## Deployment (Coolify)
+
+In Coolify, create an application from this repository with the **Docker
+Compose** build pack (`compose.yaml`) and assign it a domain. The container
+listens on port 3000 and answers `/healthz` without calling upstream, so it is
+safe to use as the health check.
+
+Set these as environment variables:
+
+| Name | Required | Notes |
+| --- | --- | --- |
+| `OPENAI_API_KEY` | yes | Read at runtime. Never baked into the image. |
+| `ALLOWED_ORIGINS` | yes | The client's origin, e.g. `https://chat.example.com`. Comma-separated for several. |
+| `OPENAI_ORG` | no | |
+| `ALLOWED_MODELS`, `DEFAULT_MODEL` | no | Defaults to `gpt-4o-mini,gpt-4o`. |
+| `MAX_TOKENS_LIMIT`, `RATE_LIMIT_*` | no | See `.env.example`. |
+
+`ALLOWED_ORIGINS` has no production default on purpose. The client runs on a
+separate subdomain, so its origin has to be named here — and the failure mode
+is a CORS error in the browser console, which is far easier to diagnose than a
+wildcard that silently lets every site on the internet spend this key's budget.
+The compose file refuses to start without it.
+
 ## Security
 
 This proxy sits in front of a key that costs money, so the defaults are

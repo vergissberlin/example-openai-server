@@ -35,7 +35,11 @@ const schema = z.object({
 	 * There is deliberately no wildcard default. The previous version fell back
 	 * to `*`, which let any page on the internet spend the key's budget.
 	 */
-	ALLOWED_ORIGINS: csv.default(['http://localhost:5173', 'https://vergissberlin.github.io']),
+	// Local development only. A deployment must set this explicitly — there is
+	// no origin here that would work in production by accident, which is the
+	// point: a wrong value fails loudly in the browser instead of quietly
+	// letting everyone in.
+	ALLOWED_ORIGINS: csv.default(['http://localhost:5173']),
 
 	/**
 	 * Models this proxy will forward. Without a whitelist, a caller can ask for
