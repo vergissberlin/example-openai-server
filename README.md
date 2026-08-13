@@ -64,12 +64,44 @@ See `.env.example` for the full list. The four that matter:
 | `ALLOWED_MODELS` | Models this server will forward. Anything else is rejected. |
 | `MAX_TOKENS_LIMIT` | Ceiling per request, applied whatever the caller asks for. |
 
+## Container image
+
+GitHub Actions builds the image and pushes it to the GitHub Container Registry
+on every push to `master`, after lint, type-check, tests and a smoke test
+against the running container have passed. Nothing reaches the registry that
+did not go through CI first.
+
+```
+ghcr.io/vergissberlin/example-openai-server:latest
+ghcr.io/vergissberlin/example-openai-server:sha-<commit>
+```
+
+`latest` moves; the `sha-` tag does not, which is what makes a rollback
+possible. Built for `linux/amd64` only — on arm the pull fails outright with
+`no matching manifest`, so you will know rather than wonder.
+
+```sh
+docker run --rm -p 3000:3000 \
+  -e OPENAI_API_KEY=sk-... \
+  -e ALLOWED_ORIGINS=http://localhost:5173 \
+  ghcr.io/vergissberlin/example-openai-server:latest
+```
+
+> **One-time step after the first publish.** Packages start out private.
+> Open the package page → *Package settings* → *Danger Zone* → *Change
+> visibility* → **Public**. There is no workflow flag for this.
+
+The image contains no key and no `.env`. Everything is read from the
+environment at startup — which is also why it refuses to start without
+`OPENAI_API_KEY`, rather than booting and failing per request.
+
 ## Deployment (Coolify)
 
 In Coolify, create an application from this repository with the **Docker
-Compose** build pack (`compose.yaml`) and assign it a domain. The container
-listens on port 3000 and answers `/healthz` without calling upstream, so it is
-safe to use as the health check.
+Compose** build pack (`compose.yaml`) and assign it a domain. Coolify pulls the
+published image rather than building it. The container listens on port 3000 and
+answers `/healthz` without calling upstream, so it is safe to use as the health
+check.
 
 Set these as environment variables:
 

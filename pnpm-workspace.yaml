@@ -1,0 +1,10 @@
+# pnpm settings. Not a workspace — pnpm 11 moved its configuration here out of
+# package.json, which it no longer reads.
+
+# pnpm blocks dependency build scripts by default, which is the right default:
+# a postinstall runs with your privileges before you have looked at anything.
+# esbuild needs one to link its platform binary, so it is approved by name
+# rather than by turning the protection off wholesale. Anything new that wants
+# to run a script fails the install until someone decides about it here.
+allowBuilds:
+  esbuild: true

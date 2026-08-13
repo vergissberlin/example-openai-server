@@ -1,28 +1,25 @@
 import OpenAI from 'openai'
 import { config } from './config.js'
-import { ApiError } from './errors.js'
 
 /**
  * The upstream client.
  *
- * Created lazily so the app can boot — and answer `/healthz` — without a key
- * configured. Requests that need one then fail individually with a clear
- * message instead of the whole process refusing to start.
+ * Constructed on first use rather than at import time, which is what lets a
+ * test install a stub before anything reaches the network.
+ *
+ * There is deliberately no "missing key" branch: config.ts refuses to parse an
+ * environment without one, so the process never gets this far misconfigured.
+ * Failing at startup rather than per request is the point — a container that
+ * boots, passes its own health check and then answers every request with a 503
+ * looks like a successful deploy to an orchestrator, which will happily retire
+ * the working version it replaced.
  */
 let client: OpenAI | null = null
 
 export function getClient(): OpenAI {
 	// An already-constructed client wins, which is what makes the test seam
-	// below work without a key in the environment.
+	// below work.
 	if (client) return client
-
-	if (!config.openAiKey) {
-		throw new ApiError(
-			'The server has no upstream API key configured.',
-			503,
-			'configuration_error'
-		)
-	}
 
 	client = new OpenAI({
 		apiKey: config.openAiKey,
