@@ -17,6 +17,7 @@
         "openai"
     ],
     "author": "André Ladmann",
+    "license": "MIT",
     "dependencies": {
         "dotenv": "^16.0.3",
         "express": "^4.18.2",
