@@ -182,17 +182,9 @@ describe('upstream failures', () => {
 		expect(response.body.error.type).toBe('rate_limit_error')
 	})
 
-	it('reports a missing key as a configuration problem, not a crash', async () => {
-		// No stub installed, and the test env has no key configured.
-		setClient(null)
-
-		const response = await request(app)
-			.post('/v1/chat/completions')
-			.send({ messages: [{ role: 'user', content: 'hi' }] })
-
-		expect(response.status).toBe(503)
-		expect(response.body.error.message).toContain('no upstream API key')
-	})
+	// A missing key used to be reported per request, with a 503. It is now
+	// rejected at startup instead — see config.spec.ts. A process that runs
+	// without one cannot exist, so there is nothing to assert here.
 })
 
 describe('GET /v1/models', () => {
